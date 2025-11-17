@@ -58,6 +58,15 @@ class PlotextChart:
         Returns:
             HTML string with inline CSS for ANSI colors
         """
+        return self.to_html()
+
+    def to_html(self) -> str:
+        """
+        Export as standalone HTML.
+
+        Returns:
+            HTML string with inline CSS for ANSI colors
+        """
         # Convert ANSI to HTML with inline styles
         html_output = self.html_converter.convert(self.ansi_output, full=False)
 
@@ -186,11 +195,20 @@ def plotext_chart(
     Returns:
         PlotextChart instance for display
 
-    Example:
+    Example (Jupyter):
         import plotext as plt
         from finmodel import plotext_chart
 
         plt.scatter(data)
         plotext_chart(plt.build(), size='small')
+
+    Example (HTML export):
+        import plotext as plt
+        from finmodel import plotext_chart
+
+        plt.scatter(data)
+        chart = plotext_chart(plt.build())
+        html_output = chart.to_html()
+        # Save or serve html_output
     """
     return PlotextChart(ansi_output, size=size)
