@@ -1,0 +1,143 @@
+name: Build PDF
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to create releases and tags
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install uv
+      run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    - name: Add uv to PATH
+      run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Create virtual environment and install dependencies
+      run: |
+        # Create venv in project directory
+        uv venv ./venv
+
+        # Compile dependencies from pyproject.toml
+        uv pip compile pyproject.toml -o requirements.txt
+
+        # Install from requirements.txt into the venv
+        uv pip install --python ./venv/bin/python -r requirements.txt
+
+        # Register as Jupyter kernel
+        ./venv/bin/python -m ipykernel install --user --name=financial-reports
+
+    - name: Install Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        version: '1.8.25'
+
+    - name: Install TinyTeX
+      run: |
+        quarto install tinytex
+
+    - name: Install LaTeX packages
+      run: |
+        ~/.TinyTeX/bin/*/tlmgr update --self
+        ~/.TinyTeX/bin/*/tlmgr install euler-math babel-german
+
+    - name: Install free fonts
+      run: |
+        # Install open-source fonts from Ubuntu repos
+        sudo apt-get update
+        sudo apt-get install -y fonts-inconsolata fonts-firacode texlive-fonts-extra
+
+        # Install repository fonts
+        sudo mkdir -p /usr/local/share/fonts
+        sudo cp Fonts/*.ttf /usr/local/share/fonts/ 2>/dev/null || true
+        sudo cp Fonts/*.otf /usr/local/share/fonts/ 2>/dev/null || true
+        fc-cache -f -v
+
+    - name: List available fonts (debug)
+      run: |
+        fc-list | grep -i "inconsolata\|fira\|palatino\|euler" || echo "Fonts installed"
+
+    - name: Apply font configuration
+      run: |
+        python3 buildfiles/apply_fonts.py buildfiles/font_config.env
+
+    - name: Set Python environment for Quarto
+      run: echo "QUARTO_PYTHON=$PWD/venv/bin/python" >> $GITHUB_ENV
+
+    - name: Build PDFs from all notebooks
+      run: |
+        export QUARTO_PYTHON="$PWD/venv/bin/python"
+        for notebook in *.ipynb; do
+          if [ -f "$notebook" ]; then
+            echo "Building $notebook..."
+            ./make_pdf.sh "$notebook" || echo "Warning: Failed to build $notebook"
+          fi
+        done
+
+    - name: Upload PDF artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: financial-reports
+        path: "*.pdf"
+        retention-days: 30
+
+    - name: Generate version tag
+      if: github.ref == 'refs/heads/main'
+      id: version
+      run: |
+        VERSION="v$(date +'%Y.%m.%d-%H%M')"
+        echo "tag=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Create dated release (preserves history)
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.version.outputs.tag }}
+        name: Build ${{ steps.version.outputs.tag }}
+        files: "*.pdf"
+        body: |
+          📄 PDF Reports from commit ${{ github.sha }}
+
+          **Download PDFs**: Click the .pdf files below (ignore source code archives)
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update latest release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: latest
+        name: Latest Build
+        files: "*.pdf"
+        prerelease: true
+        body: |
+          📄 Latest build - always updated
+
+          **Download PDFs**: Click the .pdf files below (ignore source code archives)
+
+          For prior versions, see dated releases.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload to versioned release (on tag push)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: "*.pdf"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

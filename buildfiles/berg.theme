@@ -1,0 +1,93 @@
+{
+  "text-color": "#f49f31",
+  "background-color": "#000000",
+  "line-number-color": "#f49f31",
+  "line-number-background-color": "#000000",
+  "text-styles": {
+    "Comment": {
+      "text-color": "#D54135",
+      "italic": true
+    },
+    "String": {
+      "text-color": "#A67C52"
+    },
+    "Keyword": {
+      "text-color": "#6D96D0",
+      "bold": true
+    },
+    "DataType": {
+      "text-color": "#60C487"
+    },
+    "Function": {
+      "text-color": "#FEE334"
+    },
+    "Variable": {
+      "text-color": "#0253A6"
+    },
+    "Constant": {
+      "text-color": "#8B4A8A"
+    },
+    "ControlFlow": {
+      "text-color": "#6D96D0",
+      "bold": true
+    },
+    "Operator": {
+      "text-color": "#d7d7d7"
+    },
+    "BuiltIn": {
+      "text-color": "#4DC7F9"
+    },
+    "Import": {
+      "text-color": "#FEE334"
+    },
+    "DecVal": {
+      "text-color": "#8B4A8A"
+    },
+    "BaseN": {
+      "text-color": "#8B4A8A"
+    },
+    "Float": {
+      "text-color": "#8B4A8A"
+    },
+    "Char": {
+      "text-color": "#A67C52"
+    },
+    "SpecialChar": {
+      "text-color": "#A67C52"
+    },
+    "VerbatimString": {
+      "text-color": "#A67C52"
+    },
+    "SpecialString": {
+      "text-color": "#A67C52"
+    },
+    "Annotation": {
+      "text-color": "#FEE334"
+    },
+    "Attribute": {
+      "text-color": "#4DC7F9"
+    },
+    "Preprocessor": {
+      "text-color": "#FEE334"
+    },
+    "Information": {
+      "text-color": "#60C487"
+    },
+    "Warning": {
+      "text-color": "#f49f31",
+      "bold": true
+    },
+    "Alert": {
+      "text-color": "#D54135",
+      "bold": true
+    },
+    "Error": {
+      "text-color": "#D54135",
+      "bold": true,
+      "underline": true
+    },
+    "Other": {
+      "text-color": "#d7d7d7"
+    }
+  }
+}

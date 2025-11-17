@@ -1,0 +1,46 @@
+[project]
+name = "mba-s3-assignment"
+version = "0.1.0"
+description = "MBA S3 Assignment - Custom Quarto PDF with Berg theme and table styling"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Marius Ciepluch", email = "11855163+norandom@users.noreply.github.com" }
+]
+
+dependencies = [
+    "pandas>=2.3.3",
+    "numpy>=2.3.4",
+    "scipy>=1.14.0",       # Required for scipy.stats in notebook
+    "pyyaml>=6.0.3",
+    "tabulate>=0.9.0",
+    "ipykernel>=7.0.1",
+    "ipython>=9.6.0",
+    "ipywidgets>=8.1.5",   # Required for interactive widgets in notebooks
+    "nbformat>=5.10.4",    # Required for Quarto to read .ipynb files
+    "jupyter-client>=8.6.3",  # Required for Quarto to execute notebooks
+    "nbclient>=0.10.2",    # Required for Quarto to execute notebooks
+    "openpyxl>=3.1.0",     # For Excel file reading
+    "QuantLib>=1.36",      # Quantitative finance library
+    "plotext>=5.3.2",      # Terminal plotting library for ASCII charts
+    "ansi2html>=1.9.0",    # ANSI to HTML/LaTeX conversion for plotext charts
+    "pysabr>=0.4.1",       # SABR volatility model for smile analysis
+    "riskfolio-lib>=6.0.0", # Portfolio optimization and risk metrics
+]
+
+[project.optional-dependencies]
+interactive = [
+    "mitosheet>=0.2.47",   # For interactive spreadsheet editing
+    "bpython>=0.25",       # Better Python REPL
+    "jupyterlab>=4.4.10",  # Full Jupyter environment
+    "pygwalker>=0.4.9",    # For interactive data visualization
+    "observable-jupyter>=0.1.14",  # Observable notebook integration
+    "ib-insync>=0.9.86",   # Interactive Brokers API
+]
+
+[dependency-groups]
+dev = []
+
+[project.urls]
+Homepage = "https://github.com/norandom/mba_s3"
+Repository = "https://github.com/norandom/mba_s3"
