@@ -2,11 +2,12 @@
 PlotextChart wrapper for dual Jupyter/PDF rendering.
 
 Provides automatic ANSI → HTML (Jupyter) and ANSI → LaTeX (PDF) conversion
-for plotext terminal charts, maintaining Berkeley Mono font styling.
+for plotext terminal charts, maintaining monospace font styling.
 """
 
 from typing import Literal, Optional
 from ansi2html import Ansi2HTMLConverter
+from .config import Config
 
 
 # Font size mappings for LaTeX
@@ -70,9 +71,9 @@ class PlotextChart:
         # Convert ANSI to HTML with inline styles
         html_output = self.html_converter.convert(self.ansi_output, full=False)
 
-        # Wrap in pre with Berkeley Mono font (preserves plotext theme colors)
+        # Wrap in pre with Configured font
         return f'''<pre style="
-            font-family: 'Berkeley Mono', 'Courier New', monospace;
+            font-family: {Config.CODE_FONT_FAMILY};
             padding: 1em;
             overflow-x: auto;
             line-height: 1.2;
@@ -91,11 +92,11 @@ class PlotextChart:
         # Get font size command
         font_size = LATEX_FONT_SIZES.get(self.size, r'\normalsize')
 
-        # Wrap in Verbatim environment with Berkeley Mono font
+        # Wrap in Verbatim environment with typewriter font
         # Using raw strings and concatenation to avoid f-string escaping issues
         result = r'\begin{Verbatim}[commandchars=\\\{\}]' + '\n'
         result += font_size + '\n'
-        result += r'\fontfamily{Berkeley Mono}\selectfont' + '\n'
+        result += r'\ttfamily' + '\n'
         result += latex_output + '\n'
         result += r'\end{Verbatim}'
         return result

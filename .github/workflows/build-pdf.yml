@@ -39,6 +39,9 @@ jobs:
         # Install from requirements.txt into the venv
         uv pip install --python ./venv/bin/python -r requirements.txt
 
+        # Install the project itself in editable mode
+        uv pip install --python ./venv/bin/python -e .
+
         # Register as Jupyter kernel
         ./venv/bin/python -m ipykernel install --user --name=financial-reports
 
@@ -51,10 +54,15 @@ jobs:
       run: |
         quarto install tinytex
 
+    - name: Add TinyTeX to PATH
+      run: |
+        TINYTEX_BIN=$(find ~/.TinyTeX/bin -maxdepth 1 -type d -name "*-linux" | head -n 1)
+        echo "$TINYTEX_BIN" >> $GITHUB_PATH
+
     - name: Install LaTeX packages
       run: |
-        ~/.TinyTeX/bin/*/tlmgr update --self
-        ~/.TinyTeX/bin/*/tlmgr install euler-math babel-german
+        tlmgr update --self
+        tlmgr install euler-math babel-german
 
     - name: Install free fonts
       run: |

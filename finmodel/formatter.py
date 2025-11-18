@@ -7,6 +7,7 @@ Also provides LaTeX output with proper color commands for PDF.
 
 import pandas as pd
 from .styles import TableStyle
+from .config import Config
 
 
 def format_table(df: pd.DataFrame, style: TableStyle, assertion_columns=None) -> str:
@@ -28,7 +29,7 @@ def format_table(df: pd.DataFrame, style: TableStyle, assertion_columns=None) ->
         assertion_columns = []
     
     # Start HTML
-    html = ['<table style="border-collapse: collapse; font-family: \'Berkeley Mono\', monospace; font-size: 10pt; margin: 1em 0;">']
+    html = [f'<table style="border-collapse: collapse; font-family: {Config.TABLE_FONT_FAMILY}; font-size: 10pt; margin: 1em 0;">']
     
     # Add header row
     html.append('  <thead>')
@@ -67,9 +68,9 @@ def format_table(df: pd.DataFrame, style: TableStyle, assertion_columns=None) ->
             if col_name in assertion_columns:
                 # Assertion columns get special styling
                 if value == 'Ok':
-                    cell_css = "background-color: #C6E0B4; color: #000000; text-align: center; font-weight: bold"
+                    cell_css = f"background-color: {Config.ASSERTION_OK_COLOR}; color: #000000; text-align: center; font-weight: bold"
                 elif value == 'No':
-                    cell_css = "background-color: #F4B084; color: #000000; text-align: center; font-weight: bold"
+                    cell_css = f"background-color: {Config.ASSERTION_NO_COLOR}; color: #000000; text-align: center; font-weight: bold"
                 else:
                     cell_css = style.data_style.to_css()
                 formatted = str(value) if value is not None else ""
@@ -117,7 +118,7 @@ def format_key_value_table(df: pd.DataFrame, style: TableStyle) -> str:
     if df.empty:
         return "<p>Empty table</p>"
     
-    html = ['<table style="border-collapse: collapse; font-family: \'Berkeley Mono\', monospace; font-size: 10pt; margin: 1em 0;">']
+    html = [f'<table style="border-collapse: collapse; font-family: {Config.TABLE_FONT_FAMILY}; font-size: 10pt; margin: 1em 0;">']
     
     # Header row (column names)
     if df.columns.notna().any():
@@ -192,9 +193,9 @@ def format_table_latex(df, style, hide_index=False, assertion_columns=None):
     index_bg = (style.index_style.background_color or "").replace("#", "")
     data_bg = (style.data_style.background_color or "").replace("#", "")
     
-    # Assertion colors
-    ok_bg = "C6E0B4"      # Light green for "Ok"
-    no_bg = "F4B084"      # Light orange for "No"
+    # Assertion colors (strip #)
+    ok_bg = Config.ASSERTION_OK_COLOR.replace("#", "")
+    no_bg = Config.ASSERTION_NO_COLOR.replace("#", "")
 
     # Intelligent column type detection
     def detect_column_type(col_name, col_data):
@@ -209,21 +210,19 @@ def format_table_latex(df, style, hide_index=False, assertion_columns=None):
         if pd.api.types.is_numeric_dtype(col_data):
             return 'numeric'
 
-        # WKN/ISIN are special - short codes but need small font
-        if any(kw in col_name_lower for kw in ['wkn', 'isin', 'symbol']):
+        # WKN/ISIN/Code detection
+        if any(kw in col_name_lower for kw in Config.CODE_KEYWORDS):
             return 'code'
 
-        # Text-heavy column keywords (German/English)
-        text_heavy_keywords = ['produktname', 'name', 'beschreibung', 'description',
-                                'bezeichnung', 'produkt', 'product', 'titel', 'title']
-        if any(keyword in col_name_lower for keyword in text_heavy_keywords):
+        # Text-heavy column detection
+        if any(keyword in col_name_lower for keyword in Config.TEXT_HEAVY_KEYWORDS):
             return 'long_text'
 
         # Auto-detect by average text length
         avg_length = col_data.astype(str).str.len().mean()
-        if avg_length > 30:
+        if avg_length > Config.LONG_TEXT_THRESHOLD:
             return 'long_text'
-        elif avg_length > 15:
+        elif avg_length > Config.MEDIUM_TEXT_THRESHOLD:
             return 'medium_text'
         else:
             return 'short_text'

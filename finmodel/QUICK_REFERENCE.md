@@ -3,13 +3,13 @@
 ## One-Line Usage
 
 ```python
-import sys; sys.path.insert(0, '/home/jovyan/projects/MBA_S3')
+import sys; sys.path.append('/path/to/project')
 from finmodel import ExcelReader, FinancialTable
 
 # Read Excel and display with grey styling (assumptions)
 FinancialTable(
-    ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
-    .read_key_value_table('BASF Optionsdaten', start_row=3, end_row=17),
+    ExcelReader('data/model.xlsx')
+    .read_key_value_table('Assumptions'),
     style="assumptions"
 )
 ```
@@ -102,7 +102,7 @@ FinancialTable(df, style="calculations")
 - ✅ Index (Column A): Same background as data, left-aligned
 - ✅ Data cells: Right-aligned
 - ✅ Borders: Black, 1px solid
-- ✅ Font: Berkeley Mono, 10pt
+- ✅ Font: Configurable (Default: Inconsolata), 10pt
 - ✅ Numbers: Formatted with commas and decimals
 
 ## Excel Format Expected
@@ -133,7 +133,7 @@ First column → index
 1. **Path in Jupyter**: Always add project to path first
    ```python
    import sys
-   sys.path.insert(0, '/home/jovyan/projects/MBA_S3')
+   sys.path.append('/path/to/project')
    ```
 
 2. **Auto-display**: Last line in cell auto-displays
@@ -169,8 +169,8 @@ First column → index
 
 | Issue | Solution |
 |-------|----------|
-| `No module named finmodel` | Add path: `sys.path.insert(0, '/home/jovyan/projects/MBA_S3')` |
-| `No module named openpyxl` | Run: `./sync_venv.sh` |
+| `No module named finmodel` | Add path: `sys.path.append(...)` |
+| `No module named openpyxl` | Install openpyxl |
 | Styles not showing | Check HTML output first, then Quarto conversion |
 | Wrong colors | Verify style name: `"assumptions"`, `"calculations"`, or `"outputs"` |
 
@@ -178,8 +178,8 @@ First column → index
 
 ```python
 # This code:
-reader = ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
-df = reader.read_key_value_table('BASF Optionsdaten', start_row=10, end_row=17)
+reader = ExcelReader('data.xlsx')
+df = reader.read_key_value_table('Sheet1')
 FinancialTable(df, style="assumptions")
 
 # Produces:

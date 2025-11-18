@@ -6,19 +6,19 @@
 
 ```python
 import sys
-sys.path.insert(0, '/home/jovyan/projects/MBA_S3')
+sys.path.append('/path/to/financial_model_report_automation')
 
 from finmodel import ExcelReader, FinancialTable
 ```
 
-### 2. Read the BASF options data
+### 2. Read an Excel file
 
 ```python
 # Read Excel file
-reader = ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
+reader = ExcelReader('data/model.xlsx')
 
 # Read as key-value table (Column A = index)
-df = reader.read_key_value_table('BASF Optionsdaten', start_row=3, end_row=17)
+df = reader.read_key_value_table('Assumptions')
 ```
 
 ### 3. Apply declarative styling
@@ -43,29 +43,14 @@ That's it! The table will show with:
 
 ```python
 # In your Jupyter notebook cell:
-import sys
-sys.path.insert(0, '/home/jovyan/projects/MBA_S3')
-
 from finmodel import ExcelReader, FinancialTable
 
 # Read and style in one go
-reader = ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
-df = reader.read_key_value_table('BASF Optionsdaten', start_row=3, end_row=17)
+reader = ExcelReader('data/model.xlsx')
+df = reader.read_key_value_table('Assumptions')
 
 # Display with assumptions styling
 FinancialTable(df, style="assumptions")
-```
-
-## Reading Different Sections
-
-```python
-# BASF stock data (rows 3-7)
-stock_data = reader.read_key_value_table('BASF Optionsdaten', start_row=3, end_row=7)
-FinancialTable(stock_data, style="assumptions")
-
-# Options data (rows 10-17)
-options_data = reader.read_key_value_table('BASF Optionsdaten', start_row=10, end_row=17)
-FinancialTable(options_data, style="assumptions")
 ```
 
 ## Using Different Style Presets

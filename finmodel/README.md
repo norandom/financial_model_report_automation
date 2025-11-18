@@ -12,11 +12,9 @@ A Python library for declarative styling of financial tables in Jupyter notebook
 
 ## Installation
 
-The library is part of the MBA_S3 project. Install dependencies:
+Install dependencies:
 
 ```bash
-cd /home/jovyan/projects/MBA_S3
-source ~/venvs/mba/bin/activate
 pip install -e .
 ```
 
@@ -28,10 +26,10 @@ pip install -e .
 from finmodel import ExcelReader, FinancialTable
 
 # Read Excel file
-reader = ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
+reader = ExcelReader('data/model.xlsx')
 
 # Read key-value table (assumptions format)
-df = reader.read_key_value_table('BASF Optionsdaten')
+df = reader.read_key_value_table('Assumptions')
 
 # Apply declarative styling
 table = FinancialTable(df, style="assumptions")
@@ -68,8 +66,8 @@ for table in tables:
 # The table object has _repr_html_() so it displays automatically
 from finmodel import ExcelReader, FinancialTable
 
-reader = ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
-df = reader.read_key_value_table('BASF Optionsdaten')
+reader = ExcelReader('data/model.xlsx')
+df = reader.read_key_value_table('Assumptions')
 
 # Just put the table as last line in cell - it will display
 FinancialTable(df, style="assumptions")
@@ -155,9 +153,9 @@ Example:
 ```
 | Parameter          | Value | Unit  |
 |--------------------|-------|-------|
-| Kurs (Spotpreis)   | 50    | EUR   |
-| Dividende          | 3.3   | EUR   |
-| Implizite Vol.     | 0.4   | %     |
+| Spot Price         | 50    | EUR   |
+| Dividend           | 3.3   | EUR   |
+| Implied Vol        | 0.4   | %     |
 ```
 
 ### Regular Tables
@@ -190,9 +188,10 @@ All styles are applied as **inline CSS** so they work with:
 
 ### Font
 
-Default: Berkeley Mono (monospace)
-- Size: 10pt
-- Can be overridden in Quarto preamble
+Default fonts (configurable):
+- Text: Palatino
+- Tables: Inconsolata
+- Code: Fira Code
 
 ## Quarto/LaTeX Integration
 
@@ -211,19 +210,14 @@ The library outputs HTML with inline styles. When Quarto processes the notebook:
 from finmodel import ExcelReader, FinancialTable
 
 # 1. Read Excel
-reader = ExcelReader('Datasets/Options_BASF/basf_optionsdaten.xlsx')
-df = reader.read_key_value_table('BASF Optionsdaten')
+reader = ExcelReader('data/model.xlsx')
+df = reader.read_key_value_table('Assumptions')
 
 # 2. Apply declarative styling
 assumptions = FinancialTable(df, style="assumptions")
 
 # 3. Display (renders in Jupyter, processes through Quarto to PDF)
 assumptions
-```
-
-Then compile with Quarto:
-```bash
-./make_pdf.sh
 ```
 
 ## Advanced Usage
@@ -277,19 +271,11 @@ outputs.display()
 
 ### "No module named finmodel"
 
-Make sure you're in the MBA_S3 directory and it's in Python path:
+Make sure the directory is in your Python path:
 ```python
 import sys
-sys.path.insert(0, '/home/jovyan/projects/MBA_S3')
+sys.path.append('/path/to/financial_model_report_automation')
 from finmodel import ExcelReader, FinancialTable
-```
-
-### "No module named openpyxl"
-
-Install dependencies:
-```bash
-source ~/venvs/mba/bin/activate
-pip install openpyxl
 ```
 
 ### Styles not showing in PDF
@@ -299,13 +285,6 @@ The library outputs HTML for Jupyter. Make sure:
 2. Your `preamble.tex` doesn't override HTML table styles
 3. Quarto is processing with `keep-tex: true` to debug LaTeX
 
-### Table borders not showing
-
-Borders are defined in inline CSS. If they don't appear:
-- Check Jupyter display first
-- Verify Quarto HTML → LaTeX conversion
-- May need additional LaTeX packages in preamble
-
 ## License
 
-Part of MBA S3 Assignment project. For educational use.
+For educational and professional use.

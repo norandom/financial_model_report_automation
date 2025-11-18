@@ -25,9 +25,13 @@ if [ ! -f "$NOTEBOOK" ]; then
     exit 1
 fi
 
-# Set Python environment to use the mba venv (if not already set)
+# Set Python environment (default to venv if exists, else python3)
 if [ -z "$QUARTO_PYTHON" ]; then
-    export QUARTO_PYTHON="$HOME/venvs/mba/bin/python"
+    if [ -d "venv" ]; then
+        export QUARTO_PYTHON="$PWD/venv/bin/python"
+    else
+        export QUARTO_PYTHON="python3"
+    fi
 fi
 
 # Optional: Apply font configuration (for public/template projects)
@@ -69,7 +73,7 @@ fi
 echo "  → Fixing duplicate \\listoflistings commands..."
 # Fix \listoflistings command conflicts between preamble.tex and Quarto's template
 # Change all \newcommand*\listoflistings to \providecommand*\listoflistings to avoid redefinition errors
-sed -i 's/\\newcommand\*\\listoflistings/\\providecommand*\\listoflistings/g' "$TEX_FILE"
+sed -i 's/\\newcommand*\\listoflistings/\\providecommand*\\listoflistings/g' "$TEX_FILE"
 
 echo "  → Adding vertical lines to tables..."
 # Post-process the .tex file to add vertical lines to longtable
@@ -78,9 +82,9 @@ echo "  → Adding vertical lines to tables..."
 sed -i 's/\\begin{longtable}\[\]{@{}\([rlc]*\)@{}}/\\begin{longtable}[]{|\1|}/' "$TEX_FILE"
 # Now add pipes between each column specifier within the already modified pattern
 # Replace sequences like |rrr| with |r|r|r|
-sed -i 's/\(\[]{|\)\([rlc]\)\([rlc]\)/\1\2|\3/g;s/\([rlc]\)\([rlc]|}\)/\1|\2/g' "$TEX_FILE"
+sed -i 's/\(\[{|\)\([rlc]\)\([rlc]\)/\1\2|\3/g;s/\([rlc]\)\([rlc]|}\)/\1|\2/g' "$TEX_FILE"
 # Repeat to handle all columns (for tables with more than 2 columns)
-sed -i 's/\([rlc]\)\([rlc]|}\)/\1|\2/g;s/\([rlc]\)\([rlc]|}\)/\1|\2/g' "$TEX_FILE"
+sed -i 's/\(\[{|\)\([rlc]\)\|\([rlc]|}\)/\1\2|\3/g;s/\([rlc]\)\|\([rlc]|}\)/\1|\2/g' "$TEX_FILE"
 
 # Fix code listing captions
 echo "  → Fixing code listing captions..."
@@ -89,10 +93,17 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Step 3: Final LaTeX compilation..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-LUALATEX="$HOME/.TinyTeX/bin/x86_64-linux/lualatex"
-"$LUALATEX" -interaction=nonstopmode "$TEX_FILE" 2>&1 | tail -20 || echo "Warning: LaTeX compilation had issues (non-fatal)"
+
+# Check for lualatex
+if ! command -v lualatex &> /dev/null; then
+    echo "Error: lualatex not found in PATH"
+    echo "Please install TinyTeX or a LaTeX distribution"
+    exit 1
+fi
+
+lualatex -interaction=nonstopmode "$TEX_FILE" 2>&1 | tail -20 || echo "Warning: LaTeX compilation had issues (non-fatal)"
 # Run twice for references
-"$LUALATEX" -interaction=nonstopmode "$TEX_FILE" > /dev/null 2>&1 || true
+lualatex -interaction=nonstopmode "$TEX_FILE" > /dev/null 2>&1 || true
 
 echo ""
 echo "Done! PDF generated successfully."

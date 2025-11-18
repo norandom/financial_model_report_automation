@@ -22,26 +22,16 @@
 \usepackage{unicode-math}
 
 % Main document font
-\setmainfont{Palatino-Regular}[
-  Path = Fonts/,
-  Extension = .ttf
-]
+\setmainfont{{{MAIN_FONT}}}
 
 % Monospace font (code)
-\setmonofont{FiraCode-Regular}[
-  Path = Fonts/,
-  Extension = .ttf
-]
+\setmonofont{{{MONO_FONT}}}
 
 % Math font
 \setmathfont{{{MATH_FONT}}}
 
 % Table font for financial modeling
-\newfontfamily\tablefont{Inconsolata-Regular}[
-  Path = Fonts/,
-  Extension = .ttf,
-  Scale = 1.0
-]
+\newfontfamily\tablefont{{{TABLE_FONT}}}[Scale={{TABLE_FONT_SCALE}}]
 
 % Financial modeling colors (defined but not forced on all tables)
 % These match the finmodel library color scheme
