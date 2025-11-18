@@ -6,7 +6,7 @@
 set -e  # Exit on error
 
 # Use provided notebook or default to Modul_8_Derivate.ipynb
-NOTEBOOK="${1:-Modul_8_Derivate.ipynb}"
+NOTEBOOK="${1:-Financial_Report_Example.ipynb}"
 
 # Add TinyTeX to PATH if it exists (search for architecture-specific directory)
 if [ -d "$HOME/.TinyTeX/bin" ]; then
