@@ -43,7 +43,7 @@ jobs:
         uv pip install --python ./venv/bin/python -e .
 
         # Register as Jupyter kernel
-        ./venv/bin/python -m ipykernel install --user --name=financial-reports
+        ./venv/bin/python -m ipykernel install --user --name=python3
 
     - name: Install Quarto
       uses: quarto-dev/quarto-actions/setup@v2
@@ -93,7 +93,7 @@ jobs:
         for notebook in *.ipynb; do
           if [ -f "$notebook" ]; then
             echo "Building $notebook..."
-            ./make_pdf.sh "$notebook" || echo "Warning: Failed to build $notebook"
+            ./make_pdf.sh "$notebook"
           fi
         done
 
