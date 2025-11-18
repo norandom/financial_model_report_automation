@@ -8,6 +8,16 @@ set -e  # Exit on error
 # Use provided notebook or default to Modul_8_Derivate.ipynb
 NOTEBOOK="${1:-Modul_8_Derivate.ipynb}"
 
+# Add TinyTeX to PATH if it exists (search for architecture-specific directory)
+if [ -d "$HOME/.TinyTeX/bin" ]; then
+    for bin_dir in "$HOME/.TinyTeX/bin/"*-linux; do
+        if [ -d "$bin_dir" ]; then
+            export PATH="$bin_dir:$PATH"
+            break
+        fi
+    done
+fi
+
 echo "Compiling $NOTEBOOK to PDF with Quarto..."
 echo "Using buildfiles/preamble.tex for LaTeX customization"
 echo ""
@@ -29,9 +39,16 @@ fi
 if [ -z "$QUARTO_PYTHON" ]; then
     if [ -d "venv" ]; then
         export QUARTO_PYTHON="$PWD/venv/bin/python"
+    elif [ -d "$HOME/venvs/mba" ]; then
+        export QUARTO_PYTHON="$HOME/venvs/mba/bin/python"
     else
         export QUARTO_PYTHON="python3"
     fi
+fi
+
+# Default FONT_CONFIG if not set but file exists
+if [ -z "$FONT_CONFIG" ] && [ -f "buildfiles/font_config.env" ]; then
+    export FONT_CONFIG="buildfiles/font_config.env"
 fi
 
 # Optional: Apply font configuration (for public/template projects)

@@ -56,8 +56,16 @@ jobs:
 
     - name: Add TinyTeX to PATH
       run: |
-        TINYTEX_BIN=$(find ~/.TinyTeX/bin -maxdepth 1 -type d -name "*-linux" | head -n 1)
-        echo "$TINYTEX_BIN" >> $GITHUB_PATH
+        # Find TinyTeX bin directory (usually ~/.TinyTeX/bin/x86_64-linux)
+        TINYTEX_BIN=$(find $HOME/.TinyTeX/bin -maxdepth 1 -type d -name "*-linux" | head -n 1)
+        if [ -n "$TINYTEX_BIN" ]; then
+          echo "Found TinyTeX at $TINYTEX_BIN"
+          echo "$TINYTEX_BIN" >> $GITHUB_PATH
+        else
+          echo "Error: TinyTeX bin directory not found"
+          ls -R $HOME/.TinyTeX || true
+          exit 1
+        fi
 
     - name: Install LaTeX packages
       run: |
@@ -90,6 +98,7 @@ jobs:
     - name: Build PDFs from all notebooks
       run: |
         export QUARTO_PYTHON="$PWD/venv/bin/python"
+        export FONT_CONFIG="buildfiles/font_config.env"
         for notebook in *.ipynb; do
           if [ -f "$notebook" ]; then
             echo "Building $notebook..."
