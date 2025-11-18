@@ -73,18 +73,7 @@ fi
 echo "  → Fixing duplicate \\listoflistings commands..."
 # Fix \listoflistings command conflicts between preamble.tex and Quarto's template
 # Change all \newcommand*\listoflistings to \providecommand*\listoflistings to avoid redefinition errors
-sed -i 's/\\newcommand*\\listoflistings/\\providecommand*\\listoflistings/g' "$TEX_FILE"
-
-echo "  → Adding vertical lines to tables..."
-# Post-process the .tex file to add vertical lines to longtable
-# Replace the column spec @{}XXX@{} with |X|X|X| where X can be r, l, or c
-# This adds vertical lines between columns and at edges
-sed -i 's/\\begin{longtable}\[\]{@{}\([rlc]*\)@{}}/\\begin{longtable}[]{|\1|}/' "$TEX_FILE"
-# Now add pipes between each column specifier within the already modified pattern
-# Replace sequences like |rrr| with |r|r|r|
-sed -i 's/\(\[{|\)\([rlc]\)\([rlc]\)/\1\2|\3/g;s/\([rlc]\)\([rlc]|}\)/\1|\2/g' "$TEX_FILE"
-# Repeat to handle all columns (for tables with more than 2 columns)
-sed -i 's/\(\[{|\)\([rlc]\)\|\([rlc]|}\)/\1\2|\3/g;s/\([rlc]\)\|\([rlc]|}\)/\1|\2/g' "$TEX_FILE"
+sed -i 's/\\newcommand\*\\listoflistings/\\providecommand*\\listoflistings/g' "$TEX_FILE"
 
 # Fix code listing captions
 echo "  → Fixing code listing captions..."
