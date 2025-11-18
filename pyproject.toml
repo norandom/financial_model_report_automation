@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "mba-s3-assignment"
 version = "0.1.0"
@@ -37,6 +41,9 @@ interactive = [
     "observable-jupyter>=0.1.14",  # Observable notebook integration
     "ib-insync>=0.9.86",   # Interactive Brokers API
 ]
+
+[tool.setuptools.packages.find]
+include = ["finmodel*"]
 
 [dependency-groups]
 dev = []
