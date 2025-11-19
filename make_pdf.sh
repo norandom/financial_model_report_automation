@@ -107,11 +107,23 @@ if ! command -v lualatex &> /dev/null; then
     exit 1
 fi
 
-lualatex -interaction=nonstopmode "$TEX_FILE" 2>&1 | tail -20 || echo "Warning: LaTeX compilation had issues (non-fatal)"
-# Run twice for references
+# Run lualatex and capture exit code
+if ! lualatex -interaction=nonstopmode "$TEX_FILE" 2>&1 | tail -20; then
+    echo ""
+    echo "Warning: LaTeX compilation reported errors."
+    echo "Check ${NOTEBOOK%.ipynb}.log for details."
+fi
+
+# Run again for references (if needed)
 lualatex -interaction=nonstopmode "$TEX_FILE" > /dev/null 2>&1 || true
 
-echo ""
-echo "Done! PDF generated successfully."
 PDF_FILE="${NOTEBOOK%.ipynb}.pdf"
-echo "Output: $PDF_FILE"
+if [ -f "$PDF_FILE" ]; then
+    echo ""
+    echo "Done! PDF generated successfully."
+    echo "Output: $PDF_FILE"
+else
+    echo ""
+    echo "Error: PDF file was not generated."
+    exit 1
+fi
