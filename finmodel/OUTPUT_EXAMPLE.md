@@ -1,16 +1,16 @@
-# Financial Model Output Formatting
+# Financial model output formatting
 
 ## Overview
 
-The library provides three color-coded styles following Excel financial modeling conventions:
+The library provides three color coded styles following Excel financial modeling conventions:
 
-| Style | Color | Use Case | Function |
+| Style | Color | Use case | Function |
 |-------|-------|----------|----------|
-| **assumptions** | Grey | Inputs/parameters | `read_basf_options()` |
-| **calculations** | Blue | Intermediate results | `FinancialTable(df, style='calculations')` |
-| **outputs** | Yellow | Final results | `finmodel_output()` |
+| assumptions | Grey | Inputs/parameters | `read_basf_options()` |
+| calculations | Blue | Intermediate results | `FinancialTable(df, style='calculations')` |
+| outputs | Yellow | Final results | `finmodel_output()` |
 
-## Complete Example: Black-Scholes Model
+## Complete example: Black-Scholes model
 
 ```python
 import sys
@@ -21,9 +21,9 @@ import pandas as pd
 import numpy as np
 from scipy.stats import norm
 
-# ═══════════════════════════════════════════════════════════════
+# ===============================================================
 # 1. INPUTS (Grey - Assumptions)
-# ═══════════════════════════════════════════════════════════════
+# ===============================================================
 
 data = read_basf_options()
 
@@ -39,9 +39,9 @@ sigma = data.options_df.loc['Implizite Volatilität', 'Value']
 T = data.options_df.loc['Laufzeit', 'Value']
 r = data.options_df.loc['Risikoloser Zins', 'Value']
 
-# ═══════════════════════════════════════════════════════════════
+# ===============================================================
 # 2. CALCULATIONS (Blue - Intermediate)
-# ═══════════════════════════════════════════════════════════════
+# ===============================================================
 
 # Black-Scholes calculations
 d1_call = (np.log(S/K_call) + (r + 0.5*sigma**2)*T) / (sigma*np.sqrt(T))
@@ -58,9 +58,9 @@ calc_data = pd.DataFrame({
 print("\n## Zwischenrechnungen")
 FinancialTable(calc_data, style='calculations')
 
-# ═══════════════════════════════════════════════════════════════
+# ===============================================================
 # 3. OUTPUTS (Yellow - Results)
-# ═══════════════════════════════════════════════════════════════
+# ===============================================================
 
 # Calculate final prices
 call_price = S * norm.cdf(d1_call) - K_call * np.exp(-r*T) * norm.cdf(d2_call)
@@ -89,51 +89,51 @@ print("\n## Ausgabe")
 finmodel_output(results)
 ```
 
-## Expected Output
+## Expected output
 
-### 1. Eingabeparameter (Grey)
+### 1. Eingabeparameter (grey)
 ```
                          Value   Unit
-Ausübungspreis Call    48.0000    EUR  ← Grey background
-Ausübungspreis Put     52.0000    EUR  ← Grey background
-Kurs (Spotpreis)       50.0000    EUR  ← Grey background
+Ausübungspreis Call    48.0000    EUR  <- Grey background
+Ausübungspreis Put     52.0000    EUR  <- Grey background
+Kurs (Spotpreis)       50.0000    EUR  <- Grey background
 ...
 ```
 
-### 2. Zwischenrechnungen (Blue)
+### 2. Zwischenrechnungen (blue)
 ```
            Value
-d1 (Call)  0.523  ← Light blue background
-d2 (Call)  0.123  ← Light blue background
-N(d1)      0.699  ← Light blue background
-N(d2)      0.549  ← Light blue background
+d1 (Call)  0.523  <- Light blue background
+d2 (Call)  0.123  <- Light blue background
+N(d1)      0.699  <- Light blue background
+N(d2)      0.549  <- Light blue background
 ```
 
-### 3. Ausgabe (Yellow)
+### 3. Ausgabe (yellow)
 ```
               Value
-Call Preis    5.24  ← Yellow background
-Put Preis     2.85  ← Yellow background
-Call Delta    0.68  ← Yellow background
-Put Delta    -0.32  ← Yellow background
-Gamma         0.04  ← Yellow background
-Vega          0.15  ← Yellow background
-Call Theta   -0.01  ← Yellow background
+Call Preis    5.24  <- Yellow background
+Put Preis     2.85  <- Yellow background
+Call Delta    0.68  <- Yellow background
+Put Delta    -0.32  <- Yellow background
+Gamma         0.04  <- Yellow background
+Vega          0.15  <- Yellow background
+Call Theta   -0.01  <- Yellow background
 ```
 
-## API Reference
+## API reference
 
 ### `finmodel_output(data, title="Ausgabe")`
 
-Creates yellow-styled output table for final results.
+Creates a yellow-styled output table for final results.
 
-**Parameters:**
-- `data`: Dict, list of tuples, or DataFrame
-- `title`: Section title (default: "Ausgabe")
+Parameters:
+- `data`: dict, list of tuples, or DataFrame
+- `title`: section title (default: "Ausgabe")
 
-**Returns:** `FinancialTable` with yellow styling
+Returns a `FinancialTable` with yellow styling.
 
-**Accepts:**
+Accepts:
 
 ```python
 # From dict
@@ -149,26 +149,21 @@ df = pd.DataFrame({'Value': [5.24, 2.85]}, index=['Call', 'Put'])
 finmodel_output(df)
 ```
 
-## Styling Details
+## Styling details
 
-### Assumptions (Grey - `style='assumptions'`)
-- **Labels:** Bold, no background
-- **Values:** Grey background (#D9D9D9)
-- **Use for:** Input parameters, constants
+### Assumptions (grey, `style='assumptions'`)
 
-### Calculations (Blue - `style='calculations'`)
-- **Labels:** Bold, light blue background (#D9E2F3)
-- **Values:** White background
-- **Headers:** Blue (#4472C4)
-- **Use for:** Intermediate calculations, formulas
+Labels are bold with no background. Values get a grey background (#D9D9D9). Use for input parameters and constants.
 
-### Outputs (Yellow - `style='outputs'`)
-- **Labels:** Bold, light yellow background (#FFF2CC)
-- **Values:** Light yellow background (#FFF2CC)
-- **Headers:** Orange (#FFC000)
-- **Use for:** Final results, model outputs
+### Calculations (blue, `style='calculations'`)
 
-## Complete Workflow
+Labels are bold with a light blue background (#D9E2F3). Values have a white background. Headers are blue (#4472C4). Use for intermediate calculations and formulas.
+
+### Outputs (yellow, `style='outputs'`)
+
+Labels are bold with a light yellow background (#FFF2CC). Values also get light yellow. Headers are orange (#FFC000). Use for final results and model outputs.
+
+## Complete workflow
 
 ```python
 from finmodel import read_basf_options, finmodel_output, FinancialTable
@@ -189,44 +184,41 @@ results = {'Call Preis': call_price, 'Put Preis': put_price}
 finmodel_output(results)
 ```
 
-## Visual Guide
+## Visual guide
 
 ```
-┌─────────────────────────────────────────────────┐
-│  EINGABEPARAMETER (Grey)                        │
-├─────────────────────────────────────────────────┤
-│  Parameter               │ Value  │ Unit        │
-│  Kurs (Spotpreis)        │ 50     │ EUR   ← Grey│
-│  Implizite Volatilität   │ 0.4    │ %     ← Grey│
-└─────────────────────────────────────────────────┘
++--------------------------------------------------+
+|  EINGABEPARAMETER (Grey)                         |
+|--------------------------------------------------|
+|  Parameter               | Value  | Unit         |
+|  Kurs (Spotpreis)        | 50     | EUR    Grey  |
+|  Implizite Volatilitat   | 0.4    | %      Grey  |
++--------------------------------------------------+
 
-┌─────────────────────────────────────────────────┐
-│  ZWISCHENRECHNUNGEN (Blue)                      │
-├─────────────────────────────────────────────────┤
-│  Calculation    │ Value                         │
-│  d1             │ 0.523    ← Light blue         │
-│  d2             │ 0.123    ← Light blue         │
-└─────────────────────────────────────────────────┘
++--------------------------------------------------+
+|  ZWISCHENRECHNUNGEN (Blue)                       |
+|--------------------------------------------------|
+|  Calculation    | Value                           |
+|  d1             | 0.523     Light blue            |
+|  d2             | 0.123     Light blue            |
++--------------------------------------------------+
 
-┌─────────────────────────────────────────────────┐
-│  AUSGABE (Yellow)                               │
-├─────────────────────────────────────────────────┤
-│  Result         │ Value                         │
-│  Call Preis     │ 5.24     ← Yellow             │
-│  Put Preis      │ 2.85     ← Yellow             │
-└─────────────────────────────────────────────────┘
++--------------------------------------------------+
+|  AUSGABE (Yellow)                                |
+|--------------------------------------------------|
+|  Result         | Value                           |
+|  Call Preis     | 5.24      Yellow                |
+|  Put Preis      | 2.85      Yellow                |
++--------------------------------------------------+
 ```
 
 ## Tips
 
-1. **Consistent colors** help readers understand data flow:
-   - Grey → you input this
-   - Blue → model calculates this
-   - Yellow → final answer
+1. Consistent colors help readers track data flow: grey is input, blue is calculation, yellow is the answer.
 
-2. **Keep output tables focused** - only show key results, not intermediate steps
+2. Only show the important results in output tables, not every intermediate step.
 
-3. **Use meaningful labels** in German or English:
+3. Use meaningful labels in German or English:
    ```python
    results = {
        'Call-Option Preis': call_price,
@@ -234,7 +226,7 @@ finmodel_output(results)
    }
    ```
 
-4. **Round values appropriately**:
+4. Round values appropriately:
    ```python
    results = {
        'Call Preis': round(call_price, 4),
@@ -242,7 +234,7 @@ finmodel_output(results)
    }
    ```
 
-5. **Add units if needed**:
+5. Add units if needed:
    ```python
    df = pd.DataFrame({
        'Value': [5.24, 2.85],

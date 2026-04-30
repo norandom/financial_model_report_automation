@@ -1,12 +1,12 @@
-# finmodel_output() - Multiple Columns Guide
+# finmodel_output() -- multiple columns guide
 
 ## Overview
 
-`finmodel_output()` now supports **multiple columns** with **custom headers**.
+`finmodel_output()` supports multiple columns with custom headers.
 
-## Basic Usage
+## Basic usage
 
-### Single Column (Default)
+### Single column (default)
 
 ```python
 from finmodel import finmodel_output
@@ -23,7 +23,7 @@ Call Preis   5.24
 Put Preis    2.85
 ```
 
-### Single Column with Custom Header
+### Single column with custom header
 
 ```python
 results = {'Call Preis': 5.24, 'Put Preis': 2.85}
@@ -37,9 +37,9 @@ Call Preis         5.24
 Put Preis          2.85
 ```
 
-## Multiple Columns
+## Multiple columns
 
-### Method 1: Dict of Lists
+### Method 1: dict of lists
 
 ```python
 results = {
@@ -56,7 +56,7 @@ Call   5.24   0.68  0.042
 Put    2.85  -0.32  0.042
 ```
 
-### Method 2: List of Tuples
+### Method 2: list of tuples
 
 ```python
 results = [
@@ -93,7 +93,7 @@ Or rename columns:
 finmodel_output(df, columns=['Preis (EUR)', 'Delta', 'Gamma'])
 ```
 
-## Complete Example: Black-Scholes Greeks
+## Complete example: Black-Scholes Greeks
 
 ```python
 from finmodel import read_basf_options, finmodel_output
@@ -145,9 +145,9 @@ Call   8.92    0.62    0.019    19.9  -0.012
 Put    6.74   -0.38    0.019    19.9  -0.008
 ```
 
-## Format Reference
+## Format reference
 
-### 1. Simple Dict (Single Value)
+### 1. Simple dict (single value)
 
 ```python
 data = {'Label 1': value1, 'Label 2': value2}
@@ -156,7 +156,7 @@ finmodel_output(data)
 finmodel_output(data, columns=['Custom Header'])
 ```
 
-### 2. Dict of Lists (Multiple Columns)
+### 2. Dict of lists (multiple columns)
 
 ```python
 data = {
@@ -166,11 +166,9 @@ data = {
 finmodel_output(data, columns=['Col1', 'Col2', 'Col3'])
 ```
 
-Row names = dict keys  
-Column values = list items  
-**Must specify `columns` parameter!**
+Row names come from dict keys, column values from list items. You must specify the `columns` parameter.
 
-### 3. List of Tuples (Single Value)
+### 3. List of tuples (single value)
 
 ```python
 data = [
@@ -182,7 +180,7 @@ finmodel_output(data)
 finmodel_output(data, columns=['Custom Header'])
 ```
 
-### 4. List of Tuples (Multiple Columns)
+### 4. List of tuples (multiple columns)
 
 ```python
 data = [
@@ -192,9 +190,7 @@ data = [
 finmodel_output(data, columns=['Col1', 'Col2', 'Col3'])
 ```
 
-First tuple element = row label  
-Remaining elements = column values  
-**Must specify `columns` parameter!**
+The first element of each tuple becomes the row label, the rest are column values. You must specify the `columns` parameter.
 
 ### 5. DataFrame
 
@@ -211,15 +207,15 @@ finmodel_output(df, columns=['New Col1', 'New Col2'])  # Rename
 
 ## Styling
 
-All formats produce **yellow tables** (Excel output style):
+All formats produce yellow tables (Excel output style):
 
-- **Labels (index)**: Bold, light yellow background (#FFF2CC)
-- **Values**: Light yellow background (#FFF2CC), right-aligned
-- **Headers**: Bold, orange background (#FFC000)
+- Labels (index): bold, light yellow background (#FFF2CC)
+- Values: light yellow background (#FFF2CC), right-aligned
+- Headers: bold, orange background (#FFC000)
 
 ## Tips
 
-### Tip 1: Round Your Values
+### Round your values
 
 ```python
 results = {
@@ -229,13 +225,13 @@ results = {
 finmodel_output(results, columns=['Preis', 'Delta'])
 ```
 
-### Tip 2: Use German Headers
+### Use German headers
 
 ```python
 finmodel_output(results, columns=['Preis (EUR)', 'Delta', 'Gamma'])
 ```
 
-### Tip 3: Organize Results
+### Organize results
 
 ```python
 # Group by metric (rows = options, cols = greeks)
@@ -254,15 +250,15 @@ results_by_greek = [
 finmodel_output(results_by_greek, columns=['Call', 'Put'])
 ```
 
-### Tip 4: Add Units in Headers
+### Add units in headers
 
 ```python
-finmodel_output(results, columns=['Preis (EUR)', 'Delta (%)', 'Vega (EUR/σ)'])
+finmodel_output(results, columns=['Preis (EUR)', 'Delta (%)', 'Vega (EUR/sigma)'])
 ```
 
-## Error Handling
+## Error handling
 
-### Wrong Number of Columns
+### Wrong number of columns
 
 ```python
 # ERROR: 3 values but only 2 column names
@@ -270,32 +266,32 @@ results = {
     'Call': [5.24, 0.68, 0.042],
     'Put': [2.85, -0.32, 0.042]
 }
-finmodel_output(results, columns=['Preis', 'Delta'])  # ❌ ValueError
+finmodel_output(results, columns=['Preis', 'Delta'])  # ValueError
 ```
 
 Fix:
 ```python
-finmodel_output(results, columns=['Preis', 'Delta', 'Gamma'])  # ✅
+finmodel_output(results, columns=['Preis', 'Delta', 'Gamma'])  # OK
 ```
 
-### Empty Data
+### Empty data
 
 ```python
-finmodel_output([])  # ❌ ValueError: data list cannot be empty
+finmodel_output([])  # ValueError: data list cannot be empty
 ```
 
-### Invalid Format
+### Invalid format
 
 ```python
-finmodel_output([1, 2, 3])  # ❌ ValueError: List items must be tuples or lists
+finmodel_output([1, 2, 3])  # ValueError: List items must be tuples or lists
 ```
 
 Fix:
 ```python
-finmodel_output([('Value 1', 1), ('Value 2', 2)])  # ✅
+finmodel_output([('Value 1', 1), ('Value 2', 2)])  # OK
 ```
 
-## Comparison with Other Styles
+## Comparison with other styles
 
 ```python
 from finmodel import FinancialTable
@@ -310,7 +306,7 @@ FinancialTable(df, style='calculations')
 finmodel_output(df)  # Same as FinancialTable(df, style='outputs')
 ```
 
-## Advanced: Dynamic Columns
+## Dynamic columns
 
 ```python
 # Calculate variable number of Greeks
@@ -336,4 +332,4 @@ finmodel_output(results, columns=greeks)
 | Multiple columns (list) | `finmodel_output([('Row', v1, v2)], columns=['C1', 'C2'])` |
 | From DataFrame | `finmodel_output(df)` or `finmodel_output(df, columns=[...])` |
 
-The `columns` parameter lets you define **any column headers** you want! 🎉
+The `columns` parameter controls column headers.

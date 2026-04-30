@@ -1,38 +1,27 @@
-# Tufte-Style Layout and Citations in Quarto
+# Tufte-style layout and citations in Quarto
 
-Complete guide to using margin notes, full-width content, and citation management in your Quarto notebooks.
+How to use margin notes, full-width content, and citations in your Quarto notebooks.
 
-## Table of Contents
+## Table of contents
 
-1. [Tufte Layout Overview](#tufte-layout-overview)
-2. [YAML Configuration](#yaml-configuration)
-3. [Margin Content](#margin-content)
-4. [Column Layout Options](#column-layout-options)
-5. [Citation Management](#citation-management)
-6. [Complete Examples](#complete-examples)
-
----
-
-## Tufte Layout Overview
-
-The Tufte style, named after Edward Tufte, emphasizes:
-- **Wide margins** for annotations and notes
-- **Sidenotes** instead of footnotes
-- **Margin figures** for supporting visuals
-- **Full-width content** when needed for complex material
-- **Clean reading experience** with minimal interruptions
-
-Benefits:
-- Explanatory notes don't interrupt main text flow
-- Readers can glance at annotations without losing place
-- Complex code/tables can use full page width when needed
-- Better use of page real estate
+1. [Tufte layout overview](#tufte-layout-overview)
+2. [YAML configuration](#yaml-configuration)
+3. [Margin content](#margin-content)
+4. [Column layout options](#column-layout-options)
+5. [Citation management](#citation-management)
+6. [Examples](#examples)
 
 ---
 
-## YAML Configuration
+## Tufte layout overview
 
-### Basic Tufte Setup
+The Tufte style, named after Edward Tufte, puts annotations in wide margins instead of in footnotes. Notes sit next to the text they refer to, so readers don't lose their place. Code and tables can expand to full page width when they need the room.
+
+---
+
+## YAML configuration
+
+### Basic Tufte setup
 
 Add to your notebook's YAML frontmatter:
 
@@ -54,7 +43,7 @@ format:
 ---
 ```
 
-### With Citations Enabled
+### With citations enabled
 
 ```yaml
 ---
@@ -68,42 +57,37 @@ format:
 ---
 ```
 
-### Configuration Options
+### Configuration options
 
 | Setting | Values | Effect |
 |---------|--------|--------|
 | `reference-location` | `margin`, `document`, `section`, `block` | Where footnotes appear |
 | `citation-location` | `margin`, `document` | Where citations appear |
 
-**Recommended for Tufte style:**
-- `reference-location: margin` - Footnotes in margin
-- `citation-location: margin` - Citations in margin
+For Tufte style, set both to `margin`.
 
 ---
 
-## Margin Content
+## Margin content
 
-### Inline Margin Notes
+### Inline margin notes
 
-**Syntax:**
+Syntax:
 ```markdown
 This is main text. [This is a margin note]{.aside}
 ```
 
-**Output:**
-- Main text flows normally
-- Note appears in margin alongside text
-- No footnote number or mark
+The main text flows normally. The note appears in the margin alongside it, without a footnote number.
 
-**Example:**
+Example:
 ```markdown
 The Black-Scholes model assumes constant volatility.
 [BS assumes lognormal returns]{.aside}
 ```
 
-### Block Margin Content
+### Block margin content
 
-**Syntax:**
+Syntax:
 ```markdown
 ::: {.column-margin}
 Your margin content here.
@@ -114,35 +98,30 @@ Can include multiple paragraphs.
 :::
 ```
 
-**Use for:**
-- Longer explanations
-- Multiple paragraphs
-- Formatted content
-- Small figures or tables
+Use this for longer explanations, formatted content, or small figures.
 
-**Example:**
+Example:
 ```markdown
 The Greeks measure option sensitivities.
 
 ::: {.column-margin}
 **Common Greeks:**
-- Delta (Δ): Price sensitivity
-- Gamma (Γ): Delta sensitivity
-- Theta (Θ): Time decay
-- Vega (ν): Volatility sensitivity
+- Delta: Price sensitivity
+- Gamma: Delta sensitivity
+- Theta: Time decay
+- Vega: Volatility sensitivity
 :::
 ```
 
-### Margin Links
+### Margin links
 
-**Syntax:**
 ```markdown
 ::: {.column-margin}
 [Link text](https://example.com)
 :::
 ```
 
-**Example:**
+Example:
 ```markdown
 ## Introduction
 
@@ -155,11 +134,11 @@ Main content starts here.
 
 ---
 
-## Column Layout Options
+## Column layout options
 
-### For Markdown Content
+### For markdown content
 
-**Wrap content in div with column class:**
+Wrap content in a div with a column class:
 
 ```markdown
 ::: {.column-body}
@@ -175,9 +154,9 @@ Margin-only content
 :::
 ```
 
-### For Code Cells
+### For code cells
 
-**Add directive at top of cell:**
+Add a directive at the top of the cell:
 
 ```python
 #| column: body
@@ -197,41 +176,29 @@ very_long_line = some_function(param1, param2, param3, param4, param5)
 print("Small result")
 ```
 
-### Column Width Reference
+### Column width reference
 
-| Directive | Width | Margin Available | Use Case |
-|-----------|-------|------------------|----------|
-| `column: body` | ~65% page | ✓ Yes | Default - short code, text |
-| `column: page` | ~100% page | ✗ No | Long lines, wide tables |
+| Directive | Width | Margin available | When to use |
+|-----------|-------|------------------|-------------|
+| `column: body` | ~65% page | Yes | Default -- short code, text |
+| `column: page` | ~100% page | No | Long lines, wide tables |
 | `column: margin` | Margin only | N/A | Small outputs, notes |
 
-### When to Use Each
+### When to use each
 
-**Use `column: body` (default):**
-- Short imports and assignments
-- Regular text paragraphs
-- Code that fits in ~80 characters
-- When you want margin available for notes
+`column: body` (default) -- short imports, assignments, code under ~80 characters, anything where you want the margin free for notes.
 
-**Use `column: page`:**
-- Long function calls (QuantLib, complex APIs)
-- Wide pandas DataFrames
-- Complex nested expressions
-- plotext charts needing horizontal space
-- Any line > 80 characters
+`column: page` -- long function calls (QuantLib, complex APIs), wide DataFrames, nested expressions, plotext charts, any line over 80 characters.
 
-**Use `column: margin`:**
-- Small outputs or summaries
-- Quick reference information
-- Supplementary data
+`column: margin` -- small outputs, quick reference info, supplementary data.
 
 ---
 
-## Citation Management
+## Citation management
 
-### Setting Up Citations
+### Setting up citations
 
-**1. Create Bibliography File (`references.bib`):**
+1. Create a bibliography file (`references.bib`):
 
 ```bibtex
 @book{hull2018options,
@@ -261,7 +228,7 @@ print("Small result")
 }
 ```
 
-**2. Reference in YAML:**
+2. Reference it in YAML:
 
 ```yaml
 ---
@@ -270,50 +237,35 @@ citation-location: margin
 ---
 ```
 
-### Citation Syntax
+### Citation syntax
 
-| Syntax | Output | Use Case |
-|--------|--------|----------|
+| Syntax | Output | When to use |
+|--------|--------|-------------|
 | `[@black1973pricing]` | (Black and Scholes 1973) | Parenthetical citation |
 | `@black1973pricing` | Black and Scholes (1973) | In-text citation |
 | `[-@black1973pricing]` | (1973) | Suppress author |
 | `[@black1973pricing, p. 42]` | (Black and Scholes 1973, 42) | With page number |
 | `[@black1973pricing; @hagan2002managing]` | (Black and Scholes 1973; Hagan et al. 2002) | Multiple citations |
 
-### Citation Behavior with Margins
+### How margin citations render
 
-**What happens:**
-1. **In main text:** Brief reference appears (author, year)
-2. **In margin:** Same citation appears as sidenote
-3. **At document end:** Full bibliography with complete details
+With `citation-location: margin`, a brief reference (author, year) appears in the main text and the same citation shows as a sidenote. A full bibliography appears at the end of the document.
 
-**Example:**
-
-**Your markdown:**
+Example markdown:
 ```markdown
 The Black-Scholes model [@black1973pricing] assumes constant volatility,
 but the SABR model [@hagan2002managing] addresses the volatility smile.
 ```
 
-**Rendered output:**
-
-**Main text:**
-> The Black-Scholes model assumes constant volatility, but the SABR model addresses the volatility smile.
-
-**Margin:**
+Main text renders inline references. The margin shows:
 > (Black and Scholes 1973)
 > (Hagan et al. 2002)
 
-**Bibliography section (end of document):**
-> **References**
->
-> Black, Fischer, and Myron Scholes. 1973. "The Pricing of Options and Corporate Liabilities." *Journal of Political Economy* 81 (3): 637–654.
->
-> Hagan, Patrick S., Deep Kumar, Andrew S. Lesniewski, and Diana E. Woodward. 2002. "Managing Smile Risk." *Wilmott Magazine*, 84–108.
+The bibliography at the end contains full details.
 
-### Citation Styles
+### Citation styles
 
-Quarto supports thousands of citation styles via CSL (Citation Style Language):
+Quarto supports CSL (Citation Style Language) styles:
 
 ```yaml
 ---
@@ -322,46 +274,41 @@ csl: https://www.zotero.org/styles/apa  # APA style
 ---
 ```
 
-**Popular styles:**
-- `apa` - American Psychological Association
-- `chicago-author-date` - Chicago Manual of Style
-- `ieee` - IEEE
-- `nature` - Nature journal
-- `vancouver` - Vancouver system
+Some common styles: `apa`, `chicago-author-date`, `ieee`, `nature`, `vancouver`.
 
-**Or use local file:**
+You can also point to a local file:
 ```yaml
 csl: chicago-author-date.csl
 ```
 
 ---
 
-## Complete Examples
+## Examples
 
-### Example 1: Technical Section with Margin Notes
+### Example 1: Technical section with margin notes
 
 ```markdown
-## Black-Scholes Option Pricing
+## Black-Scholes option pricing
 
 The Black-Scholes model provides an analytical solution for European options.
 [Analytical = closed-form formula, no iteration needed]{.aside}
 
 The model makes several key assumptions [@black1973pricing]:
 
-- Constant volatility σ
+- Constant volatility
 - Lognormal stock price distribution
 - No transaction costs
 - Continuous trading
 
 ::: {.column-margin}
-**Model Limitations:**
+**Model limitations:**
 These assumptions often fail in real markets, leading to pricing errors.
 :::
 ```
 
-### Example 2: Code Cell with Full Width
+### Example 2: Code cell with full width
 
-**In Jupyter code cell:**
+In a Jupyter code cell:
 
 ```python
 #| label: quantlib-setup
@@ -385,16 +332,16 @@ bsm_process = ql.BlackScholesMertonProcess(
 )
 ```
 
-### Example 3: Mixed Regular and Full-Width
+### Example 3: Mixed regular and full-width
 
 ```markdown
-## Assignment 9: Greeks Calculation
+## Assignment 9: Greeks calculation
 
 We calculate option sensitivities using QuantLib's analytical engine.
 [Greeks measure how option prices change with market conditions]{.aside}
 ```
 
-**Regular width code (margin available):**
+Regular width code (margin available):
 ```python
 # Import libraries
 import QuantLib as ql
@@ -405,7 +352,7 @@ S0 = 50.0
 K = 48.0
 ```
 
-**Full width code (needs space):**
+Full width code (needs space):
 ```python
 #| column: page
 
@@ -424,10 +371,10 @@ results = pd.DataFrame({
 })
 ```
 
-### Example 4: Margin Figure with Citation
+### Example 4: Margin figure with citation
 
 ```markdown
-## Volatility Smile Analysis
+## Volatility smile analysis
 
 The SABR model [@hagan2002managing] captures the volatility smile phenomenon.
 
@@ -440,27 +387,27 @@ The SABR model [@hagan2002managing] captures the volatility smile phenomenon.
 Our analysis shows significant deviation from Black-Scholes assumptions.
 ```
 
-### Example 5: Combining Everything
+### Example 5: Combining everything
 
 ```markdown
-## Assignment 10: Black-Scholes Critique
+## Assignment 10: Black-Scholes critique
 
 The Black-Scholes model has several known limitations [@hull2018options, ch. 19].
 
-### Critique 1: Constant Volatility
+### Critique 1: Constant volatility
 
 ::: {.column-margin}
-**Historical Evidence:**
+**Historical evidence:**
 Market volatility is stochastic, not constant [@heston1993closed].
 :::
 
-The BS model assumes σ is constant over the option's life.
+The BS model assumes sigma is constant over the option's life.
 [In reality, volatility clusters and mean-reverts]{.aside}
 
 We demonstrate this with SABR model comparison [@hagan2002managing]:
 ```
 
-**Full-width code:**
+Full-width code:
 ```python
 #| column: page
 #| label: sabr-comparison
@@ -485,9 +432,9 @@ Results show the volatility smile that BS cannot explain.
 
 ---
 
-## Quick Reference
+## Quick reference
 
-### Essential Syntax
+### Syntax
 
 ```markdown
 # Margin note
@@ -508,7 +455,7 @@ Content here
 [@key1; @key2]
 ```
 
-### YAML Checklist
+### YAML checklist
 
 ```yaml
 ---
@@ -521,7 +468,7 @@ format:
 ---
 ```
 
-### Decision Tree: Which Column Width?
+### Which column width?
 
 ```
 Is this code/content?
@@ -535,131 +482,110 @@ Is this code/content?
 
 ---
 
-## Tips and Best Practices
+## Tips
 
-### Margin Notes
+### Margin notes
 
-✅ **Do:**
+Do:
 - Keep margin notes brief (1-3 sentences)
 - Use for definitions, context, cross-references
 - Explain terminology or abbreviations
-- Add quick clarifications
 
-❌ **Don't:**
-- Write long paragraphs in margins
-- Duplicate main text content
-- Overuse - becomes cluttered
+Avoid:
+- Long paragraphs in margins
+- Duplicating main text content
+- Overusing them -- the margin gets cluttered fast
 
-### Full-Width Content
+### Full-width content
 
-✅ **Do:**
+Do:
 - Use for QuantLib code (long function names)
 - Use for wide DataFrames/tables
 - Use for complex nested expressions
-- Add `#| column: page` proactively for readability
 
-❌ **Don't:**
-- Use full-width for short, simple code
-- Use when margin notes are more important
-- Mix full-width and margin content on same section
+Avoid:
+- Using full-width for short, simple code
+- Using it when margin notes are more important nearby
 
 ### Citations
 
-✅ **Do:**
-- Cite primary sources for models/methods
+Do:
+- Cite primary sources for models and methods
 - Use consistent citation style
 - Include page numbers for specific claims
-- Maintain complete `.bib` file
 
-❌ **Don't:**
-- Over-cite common knowledge
-- Mix citation styles manually
-- Forget to add new sources to `.bib`
+Avoid:
+- Over-citing common knowledge
+- Mixing citation styles manually
+- Forgetting to add new sources to `.bib`
 
 ---
 
 ## Troubleshooting
 
-### Margin Note Not Appearing
+### Margin note not appearing
 
-**Problem:** `[Text](link){.aside}` doesn't go to margin
-
-**Solution:** Wrap in additional element:
+If `[Text](link){.aside}` doesn't go to the margin, wrap it instead:
 ```markdown
 ::: {.column-margin}
 [Text](link)
 :::
 ```
 
-### Code Cell Too Wide
+### Code cell too wide
 
-**Problem:** Code wraps badly or overflows
-
-**Solution:** Add full-width directive:
+If code wraps badly or overflows, add the full-width directive:
 ```python
 #| column: page
 
 # Long code here
 ```
 
-### Citations Not In Margin
+### Citations not in margin
 
-**Problem:** Citations appear as footnotes at page bottom
-
-**Solution:** Check YAML has:
+Check that your YAML has:
 ```yaml
 citation-location: margin
 ```
 
-### Bibliography Not Appearing
+### Bibliography not appearing
 
-**Problem:** No references section at end
-
-**Solution:** Ensure:
-1. `bibliography: references.bib` in YAML
-2. `.bib` file exists and has entries
-3. At least one citation `[@key]` in document
+Make sure:
+1. `bibliography: references.bib` is in your YAML
+2. The `.bib` file exists and has entries
+3. At least one citation `[@key]` appears in the document
 
 ---
 
 ## Resources
 
-### Official Documentation
+### Official documentation
 
 - [Quarto Page Layout](https://quarto.org/docs/authoring/article-layout.html)
 - [Quarto Citations](https://quarto.org/docs/authoring/footnotes-and-citations.html)
 - [CSL Citation Styles](https://citationstyles.org/)
 
-### Bibliography Management
+### Bibliography management
 
-- [Zotero](https://www.zotero.org/) - Free reference manager
-- [JabRef](https://www.jabref.org/) - BibTeX editor
-- [Google Scholar](https://scholar.google.com/) - BibTeX export from "Cite"
+- [Zotero](https://www.zotero.org/) -- free reference manager
+- [JabRef](https://www.jabref.org/) -- BibTeX editor
+- [Google Scholar](https://scholar.google.com/) -- BibTeX export from "Cite"
 
-### Example Files
+### Example files
 
 In this project:
-- `Modul_8_Derivate.ipynb` - Full example with Tufte layout
-- `buildfiles/README_FONTS.md` - Font configuration
-- `Docs/` - Additional documentation
+- `Modul_8_Derivate.ipynb` -- full example with Tufte layout
+- `buildfiles/README_FONTS.md` -- font configuration
+- `Docs/` -- additional documentation
 
 ---
 
 ## Summary
 
-**Tufte Layout = Better Academic Documents**
-
-1. **YAML:** Add `reference-location: margin` and `citation-location: margin`
-2. **Margin Notes:** Use `[text]{.aside}` or `::: {.column-margin}`
-3. **Full Width:** Add `#| column: page` to code cells with long lines
-4. **Citations:** Create `.bib` file, add `bibliography:` to YAML, cite with `[@key]`
-
-**Result:**
-- Clean main text flow
-- Helpful annotations in margins
-- Full width when needed
-- Professional academic presentation
-- Automatic citation management
+1. Add `reference-location: margin` and `citation-location: margin` to your YAML
+2. Use `[text]{.aside}` or `::: {.column-margin}` for margin notes
+3. Add `#| column: page` to code cells with long lines
+4. Create a `.bib` file, add `bibliography:` to YAML, cite with `[@key]`
 
 ---
 

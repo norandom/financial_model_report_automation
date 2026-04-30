@@ -1,6 +1,6 @@
-# finmodel - Quick Reference
+# finmodel -- quick reference
 
-## One-Line Usage
+## One-line usage
 
 ```python
 import sys; sys.path.append('/path/to/project')
@@ -14,7 +14,7 @@ FinancialTable(
 )
 ```
 
-## API Cheat Sheet
+## API cheat sheet
 
 ### ExcelReader
 
@@ -34,24 +34,24 @@ FinancialTable(
 | `.display()` | Show in Jupyter | None (displays) |
 | Just type the object | Auto-display | None (displays) |
 
-### Style Presets
+### Style presets
 
-| Preset | Color | Use For |
+| Preset | Color | Use for |
 |--------|-------|---------|
 | `"assumptions"` | Grey (#D9D9D9) | Inputs, parameters |
 | `"calculations"` | Blue (#4472C4) | Formulas, calcs |
 | `"outputs"` | Yellow (#FFC000) | Results, metrics |
 
-## Common Patterns
+## Common patterns
 
-### Pattern 1: Single Table
+### Pattern 1: single table
 ```python
 reader = ExcelReader('data.xlsx')
 df = reader.read_key_value_table('Sheet1')
 FinancialTable(df, style="assumptions")
 ```
 
-### Pattern 2: Multiple Tables
+### Pattern 2: multiple tables
 ```python
 reader = ExcelReader('data.xlsx')
 
@@ -69,7 +69,7 @@ inputs.display()
 results.display()
 ```
 
-### Pattern 3: From Dict
+### Pattern 3: from dict
 ```python
 import pandas as pd
 
@@ -81,35 +81,35 @@ df = pd.DataFrame({
 FinancialTable(df, style="calculations")
 ```
 
-## Styling Details
+## Styling details
 
-### Assumptions (Grey)
+### Assumptions (grey)
 ```
-┌─────────────────────────────────┐
-│ Parameter        │ Value │ Unit │ ← Bold, grey bg
-├─────────────────────────────────┤
-│ Spot Price       │ 50    │ EUR  │ ← Grey bg
-│ Strike           │ 48    │ EUR  │ ← Grey bg
-└─────────────────────────────────┘
-     ↑                ↑
++----------------------------------+
+| Parameter        | Value | Unit  | <- Bold, grey bg
+|----------------------------------|
+| Spot Price       | 50    | EUR   | <- Grey bg
+| Strike           | 48    | EUR   | <- Grey bg
++----------------------------------+
+     ^                ^
    Left align     Right align
    (index)        (data)
 ```
 
-### What Gets Styled
+### What gets styled
 
-- ✅ Headers: Bold, left-aligned
-- ✅ Index (Column A): Same background as data, left-aligned
-- ✅ Data cells: Right-aligned
-- ✅ Borders: Black, 1px solid
-- ✅ Font: Configurable (Default: Inconsolata), 10pt
-- ✅ Numbers: Formatted with commas and decimals
+- Headers: bold, left-aligned
+- Index (Column A): same background as data, left-aligned
+- Data cells: right-aligned
+- Borders: black, 1px solid
+- Font: configurable (default Inconsolata), 10pt
+- Numbers: formatted with commas and decimals
 
-## Excel Format Expected
+## Excel format expected
 
-### Key-Value Tables
+### Key-value tables
 ```
-Column A: Label/parameter name → becomes index
+Column A: Label/parameter name -> becomes index
 Column B: Value
 Column C: Unit (optional)
 ```
@@ -121,34 +121,34 @@ ISIN             | DE000BASF111  |
 Kurs (Spotpreis) | 50            | EUR
 ```
 
-### Regular Tables
+### Regular tables
 ```
 Row 1: Headers
 Row 2+: Data
-First column → index
+First column -> index
 ```
 
 ## Tips
 
-1. **Path in Jupyter**: Always add project to path first
+1. Always add the project to your path first:
    ```python
    import sys
    sys.path.append('/path/to/project')
    ```
 
-2. **Auto-display**: Last line in cell auto-displays
+2. The last line in a Jupyter cell auto-displays:
    ```python
    FinancialTable(df, style="assumptions")  # Shows automatically
    ```
 
-3. **Quarto compatibility**: Works seamlessly with `./make_pdf.sh`
+3. Works with `./make_pdf.sh` for PDF output.
 
-4. **Number formatting**: Automatic based on value type
+4. Number formatting is automatic based on value type:
    - Integers: `1,000`
-   - Floats ≥ 1: `1,234.56`
+   - Floats >= 1: `1,234.56`
    - Floats < 1: `0.0489`
 
-## Color Codes
+## Color codes
 
 ```python
 # Grey (Assumptions)
@@ -174,7 +174,7 @@ First column → index
 | Styles not showing | Check HTML output first, then Quarto conversion |
 | Wrong colors | Verify style name: `"assumptions"`, `"calculations"`, or `"outputs"` |
 
-## Example Output
+## Example output
 
 ```python
 # This code:
@@ -183,17 +183,17 @@ df = reader.read_key_value_table('Sheet1')
 FinancialTable(df, style="assumptions")
 
 # Produces:
-# ┌──────────────────────────────────────────┐
-# │                           │ Value │ Unit │
-# ├──────────────────────────────────────────┤
-# │ Optionsdaten              │       │      │
-# │ Ausübungspreis Call       │ 48    │ EUR  │
-# │ Ausübungspreis Put        │ 52    │ EUR  │
-# │ Kurs (Spotpreis)          │ 50    │ EUR  │
-# │ Dividendenrendite         │ 0.0489│ %    │
-# │ Implizite Volatilität     │ 0.4   │ %    │
-# │ Laufzeit                  │ 1     │ Jahre│
-# │ Risikoloser Zins          │ 0.005 │ %    │
-# └──────────────────────────────────────────┘
-#   All with grey background and proper formatting!
+# +-------------------------------------------+
+# |                           | Value | Unit  |
+# |-------------------------------------------|
+# | Optionsdaten              |       |       |
+# | Ausübungspreis Call       | 48    | EUR   |
+# | Ausübungspreis Put        | 52    | EUR   |
+# | Kurs (Spotpreis)          | 50    | EUR   |
+# | Dividendenrendite         | 0.0489| %     |
+# | Implizite Volatilitat     | 0.4   | %     |
+# | Laufzeit                  | 1     | Jahre |
+# | Risikoloser Zins          | 0.005 | %     |
+# +-------------------------------------------+
+#   All cells get grey background and proper formatting.
 ```

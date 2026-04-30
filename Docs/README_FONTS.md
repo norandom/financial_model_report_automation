@@ -1,33 +1,30 @@
-# Font Configuration System
+# Font configuration
 
-This directory contains a flexible font configuration system for PDF generation from Jupyter notebooks using Quarto.
-
-## Overview
-
-The font system allows you to easily switch between different font profiles (e.g., licensed fonts for personal use, free fonts for public distribution) without modifying code.
+This directory contains the font configuration for PDF generation from Jupyter notebooks using Quarto. You can switch between font profiles (licensed fonts for personal use, free fonts for distribution) without editing code.
 
 ## Files
 
-- **`preamble.tex`** - Generated LaTeX preamble (do not edit directly)
-- **`preamble.tex.template`** - Template with font variables (`{{MATH_FONT}}`, `{{TABLE_FONT}}`, etc.)
-- **`font_config.env`** - Current font configuration (Default: Free/Open Source fonts)
-- **`apply_fonts.py`** - Script to generate `preamble.tex` from template using font config
+- `preamble.tex` -- generated LaTeX preamble (do not edit directly)
+- `preamble.tex.template` -- template with font variables (`{{MATH_FONT}}`, `{{TABLE_FONT}}`, etc.)
+- `font_config.env` -- current font configuration (defaults to free/open source fonts)
+- `apply_fonts.py` -- generates `preamble.tex` from the template using the font config
 
-## Quick Start
+## Quick start
 
-### Using Default Free Fonts
+### Using the default free fonts
 
-Just run `make_pdf.sh`. It uses `font_config.env` which is configured for:
-- **Main**: Palatino (System font)
-- **Mono**: Fira Code (System font)
-- **Math**: Euler-Math (TeX font)
-- **Table**: Inconsolata (System font)
+Run `make_pdf.sh`. It uses `font_config.env`, which is configured for:
+
+- Main: Palatino (system font)
+- Mono: Fira Code (system font)
+- Math: Euler-Math (TeX font)
+- Table: Inconsolata (system font)
 
 ```bash
 ./make_pdf.sh
 ```
 
-### Creating Custom Font Profiles
+### Creating custom font profiles
 
 1. Create a new config file:
    ```bash
@@ -48,38 +45,38 @@ Just run `make_pdf.sh`. It uses `font_config.env` which is configured for:
    FONT_CONFIG=buildfiles/font_config_custom.env ./make_pdf.sh
    ```
 
-## Font Requirements
+## Font requirements
 
-For the default configuration, ensure these fonts are installed on your system:
+For the default configuration, these fonts need to be installed:
 
-**Ubuntu/Debian:**
+Ubuntu/Debian:
 ```bash
 sudo apt-get install fonts-inconsolata fonts-firacode texlive-fonts-extra
 ```
 
-**macOS (Homebrew):**
+macOS (Homebrew):
 ```bash
 brew tap homebrew/cask-fonts
 brew install --cask font-inconsolata font-fira-code
 ```
 
-**Manual Installation:**
-- **Palatino**: Usually included with OS (or use TeX Gyre Pagella)
-- **Fira Code**: https://github.com/tonsky/FiraCode
-- **Inconsolata**: https://fonts.google.com/specimen/Inconsolata
-- **Euler Math**: Included in TeXLive (`texlive-fonts-extra`)
+Manual installation:
+- Palatino: usually included with the OS (or use TeX Gyre Pagella)
+- Fira Code: https://github.com/tonsky/FiraCode
+- Inconsolata: https://fonts.google.com/specimen/Inconsolata
+- Euler Math: included in TeXLive (`texlive-fonts-extra`)
 
-## Notebook YAML Fonts
+## Notebook YAML fonts
 
-The notebook's YAML front matter also specifies `mainfont` and `monofont`. You should ensure these match your configuration.
+The notebook's YAML front matter also specifies `mainfont` and `monofont`. Make sure these match your configuration.
 
-## GitHub Actions Integration
+## GitHub Actions integration
 
-For GitHub Actions workflows, you can set the `FONT_CONFIG` environment variable in `.github/workflows/build-pdf.yml`.
+For GitHub Actions workflows, set the `FONT_CONFIG` environment variable in `.github/workflows/build-pdf.yml`.
 
 ## Troubleshooting
 
-### Font Not Found Error
+### Font not found error
 
 If you get "font not found" errors during PDF compilation:
 
@@ -88,7 +85,7 @@ If you get "font not found" errors during PDF compilation:
    fc-list | grep -i "font-name"
    ```
 
-2. Install missing fonts (see Font Requirements above)
+2. Install missing fonts (see font requirements above)
 
 3. Update font cache:
    ```bash

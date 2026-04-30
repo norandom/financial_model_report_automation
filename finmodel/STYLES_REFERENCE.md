@@ -1,72 +1,65 @@
-# finmodel Style Reference
+# finmodel style reference
 
-## Available Styles
+## Available styles
 
-### 1. **standard** (default)
-- **Color**: Light blue headers (#8FAADC), white data cells
-- **Use case**: Default table style, general purpose
-- **Example**:
+### 1. standard (default)
+- Light blue headers (#8FAADC), white data cells
+- General purpose table style
   ```python
   FinancialTable(df)  # Uses standard by default
   FinancialTable(df, style='standard')
   ```
 
-### 2. **input_data**
-- **Color**: Light orange (#FDE9D9) data cells, white headers
-- **Use case**: Input data tables
-- **Example**:
+### 2. input_data
+- Light orange (#FDE9D9) data cells, white headers
+- For input data tables
   ```python
   FinancialTable(df, style='input_data')
   ```
 
-### 3. **calc_and_output**
-- **Color**: Light grey (#F2F2F2) data cells, white headers
-- **Use case**: Calculations and intermediate outputs
-- **Example**:
+### 3. calc_and_output
+- Light grey (#F2F2F2) data cells, white headers
+- For calculations and intermediate outputs
   ```python
   FinancialTable(df, style='calc_and_output')
   ```
 
-### 4. **formulas_or_refs**
-- **Color**: Light green (#E2EFDA) data cells, white headers
-- **Use case**: Formula tables or reference data
-- **Example**:
+### 4. formulas_or_refs
+- Light green (#E2EFDA) data cells, white headers
+- For formula tables or reference data
   ```python
   FinancialTable(df, style='formulas_or_refs')
   ```
 
-### 5. **plausibility**
-- **Color**: Light violet (#E9D7F3) data cells, white headers
-- **Use case**: Plausibility checks and validation tables
-- **Example**:
+### 5. plausibility
+- Light violet (#E9D7F3) data cells, white headers
+- For plausibility checks and validation tables
   ```python
   FinancialTable(df, style='plausibility')
   ```
 
-### 6. **results**
-- **Color**: Yellow (#FFF2CC) data cells, orange/yellow headers (#FFC000)
-- **Use case**: Final results and key outputs
-- **Example**:
+### 6. results
+- Yellow (#FFF2CC) data cells, orange/yellow headers (#FFC000)
+- For final results and outputs
   ```python
   FinancialTable(df, style='results')
   finmodel_output(data)  # Uses results style by default
   ```
 
-### 7. **assumptions**
-- **Color**: Grey (#D9D9D9) data cells, no header background
-- **Use case**: Model assumptions and input parameters
-- **Example**:
+### 7. assumptions
+- Grey (#D9D9D9) data cells, no header background
+- For model assumptions and input parameters
   ```python
   FinancialTable(df, style='assumptions')
   ```
 
-## Backwards Compatibility
+## Backwards compatibility
 
 Old style names still work as aliases:
-- `'calculations'` → maps to `'standard'`
-- `'outputs'` → maps to `'results'`
+- `'calculations'` maps to `'standard'`
+- `'outputs'` maps to `'results'`
 
-## Color Palette
+## Color palette
 
 | Style | Header BG | Data BG | Description |
 |-------|-----------|---------|-------------|
@@ -78,7 +71,7 @@ Old style names still work as aliases:
 | results | #FFC000 (orange/yellow) | #FFF2CC (light yellow) | Outputs |
 | assumptions | None | #D9D9D9 (grey) | Assumptions |
 
-## Usage Examples
+## Usage examples
 
 ```python
 from finmodel import FinancialTable, finmodel_output
@@ -99,11 +92,9 @@ results = {
     'Total Revenue': 9950,
     'Average Price': 52.5
 }
-finmodel_output(results)  # Automatically uses 'results' style
+finmodel_output(results)  # Uses 'results' style
 ```
 
-## LaTeX Color Codes
+## LaTeX color codes
 
-All styles render with proper color codes in both HTML (Jupyter) and LaTeX (PDF) output:
-- HTML: Uses inline `background-color` styles
-- LaTeX: Uses `\cellcolor[HTML]{...}` commands
+All styles render with proper color codes in both HTML (Jupyter) and LaTeX (PDF) output. HTML uses inline `background-color` styles; LaTeX uses `\cellcolor[HTML]{...}` commands.

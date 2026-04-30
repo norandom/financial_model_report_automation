@@ -1,19 +1,19 @@
 # Financial Report Document Pipeline
 
-Professional financial reports from Jupyter notebooks with Tufte-style layout, margin notes, and automated PDF generation.
+Turn Jupyter notebooks into PDF reports with Tufte-style margins, sidenotes, and BibTeX citations.
 
 ## Features
 
-- **Tufte-Style Layout** - Margin notes and annotations alongside main content
-- **Full-Width Code Blocks** - Flexible layout for complex code and wide tables
-- **Citation Management** - BibTeX integration with margin citations
-- **Professional Typography** - Free/open-source fonts (Palatino, Fira Code, Inconsolata)
-- **Automated PDF Generation** - GitHub Actions builds PDFs automatically
-- **Virtual Environment** - Reproducible Python environment with Jupyter kernel
+- Tufte-style margin notes and annotations alongside main content
+- Full-width code blocks for wide tables and long lines
+- BibTeX citations rendered in the margin
+- Open source fonts (Palatino, Fira Code, Inconsolata)
+- GitHub Actions builds PDFs on push
+- Reproducible Python environment via uv
 
-## Quick Start
+## Quick start
 
-### 1. Clone or Use as Template
+### 1. Clone or use as template
 
 ```bash
 # Clone this repository
@@ -24,7 +24,7 @@ cd Financial_Report_Document_Pipeline
 # Click "Use this template" button on GitHub
 ```
 
-### 2. Setup Environment
+### 2. Set up the environment
 
 ```bash
 # Install uv (if not already installed)
@@ -37,7 +37,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 source load_venv.sh
 ```
 
-### 3. Build PDF
+### 3. Build a PDF
 
 ```bash
 # Build the example notebook
@@ -47,7 +47,7 @@ source load_venv.sh
 ./make_pdf.sh *.ipynb
 ```
 
-## Project Structure
+## Project structure
 
 ```
 Financial_Report_Document_Pipeline/
@@ -70,9 +70,9 @@ Financial_Report_Document_Pipeline/
     └── build-pdf.yml                # Automated PDF builds
 ```
 
-## Creating Your Report
+## Creating your report
 
-### 1. Create a New Notebook
+### 1. Create a new notebook
 
 Copy `Financial_Report_Example.ipynb` as a starting point:
 
@@ -80,7 +80,7 @@ Copy `Financial_Report_Example.ipynb` as a starting point:
 cp Financial_Report_Example.ipynb My_Report.ipynb
 ```
 
-### 2. Update YAML Frontmatter
+### 2. Update YAML frontmatter
 
 ```yaml
 ---
@@ -95,14 +95,14 @@ format:
 ---
 ```
 
-### 3. Add Content with Margin Notes
+### 3. Add content with margin notes
 
-**Inline margin note:**
+Inline margin note:
 ```markdown
 This is main text. [This is a margin note]{.aside}
 ```
 
-**Block margin content:**
+Block margin content:
 ```markdown
 ::: {.column-margin}
 **Key Point:**
@@ -110,7 +110,7 @@ Extended explanation in margin.
 :::
 ```
 
-### 4. Full-Width Code Blocks
+### 4. Full-width code blocks
 
 For code that needs more horizontal space:
 
@@ -121,9 +121,9 @@ For code that needs more horizontal space:
 very_long_function_call(parameter1, parameter2, parameter3, parameter4)
 ```
 
-### 5. Add Citations
+### 5. Add citations
 
-**Create/Update references.bib:**
+Create or update `references.bib`:
 
 ```bibtex
 @article{your2024citation,
@@ -134,7 +134,7 @@ very_long_function_call(parameter1, parameter2, parameter3, parameter4)
 }
 ```
 
-**Cite in your notebook:**
+Cite in your notebook:
 
 ```markdown
 Modern portfolio theory [@markowitz1952portfolio] revolutionized finance.
@@ -146,16 +146,16 @@ Modern portfolio theory [@markowitz1952portfolio] revolutionized finance.
 ./make_pdf.sh My_Report.ipynb
 ```
 
-## Font Configuration
+## Font configuration
 
-This template uses **free/open-source fonts** by default:
+The template ships with free/open source fonts:
 
-- **Main text**: Palatino
-- **Code**: Fira Code
-- **Tables**: Inconsolata
-- **Math**: Euler Math
+- Main text: Palatino
+- Code: Fira Code
+- Tables: Inconsolata
+- Math: Euler Math
 
-### Customizing Fonts
+### Customizing fonts
 
 Edit `buildfiles/font_config.env`:
 
@@ -169,19 +169,17 @@ TABLE_FONT_SCALE="1.0"
 
 See `Docs/README_FONTS.md` for details.
 
-## GitHub Actions - Automated PDF Builds
+## GitHub Actions
 
-PDFs are automatically built when you push to GitHub:
+PDFs are built automatically when you push to GitHub.
 
 ### Setup
 
-1. **Enable GitHub Actions** in your repository settings
-2. **Push to main branch** - workflow triggers automatically
-3. **Download PDFs** from:
-   - Actions → Artifacts
-   - Releases → Latest build
+1. Enable GitHub Actions in your repository settings
+2. Push to the main branch -- the workflow triggers automatically
+3. Download PDFs from Actions > Artifacts or Releases > Latest build
 
-### What It Does
+### What it does
 
 - Installs all dependencies
 - Sets up free fonts
@@ -189,46 +187,32 @@ PDFs are automatically built when you push to GitHub:
 - Uploads PDFs as artifacts
 - Creates releases with PDFs attached
 
-### Manual Trigger
+### Manual trigger
 
-Go to Actions → Build PDF → Run workflow
+Go to Actions > Build PDF > Run workflow
 
 ## Documentation
 
-Comprehensive guides in `Docs/`:
+Guides in `Docs/`:
 
-- **`Tufte_Layout_and_Citations.md`** - Complete guide to:
-  - Margin notes syntax
-  - Column layout options (body, page, margin)
-  - Citation management
-  - Full examples and troubleshooting
-
-- **`README_FONTS.md`** - Font configuration system:
-  - Creating custom font profiles
-  - Switching between licensed and free fonts
-  - Font installation instructions
+- `Tufte_Layout_and_Citations.md` -- margin notes syntax, column layout options, citation management, examples, and troubleshooting
+- `README_FONTS.md` -- creating custom font profiles, switching between licensed and free fonts, installation instructions
 
 ## Dependencies
 
 Defined in `pyproject.toml`:
 
-**Core:**
-- pandas, numpy, matplotlib
-- jupyter, ipykernel
+Core: pandas, numpy, matplotlib, jupyter, ipykernel
 
-**Financial (optional):**
-- QuantLib, pysabr, riskfolio-lib (if needed for your reports)
+Financial (optional): QuantLib, pysabr, riskfolio-lib
 
-**Build tools:**
-- Quarto (install separately)
-- TinyTeX (LaTeX distribution)
-- uv (Python package manager)
+Build tools: Quarto (install separately), TinyTeX (LaTeX distribution), uv (Python package manager)
 
 ## Requirements
 
-- **Python** 3.10+
-- **Quarto** 1.4+ ([install](https://quarto.org/docs/get-started/))
-- **uv** (Python package manager)
+- Python 3.10+
+- Quarto 1.4+ ([install](https://quarto.org/docs/get-started/))
+- uv (Python package manager)
 
 Install Quarto:
 ```bash
@@ -247,9 +231,9 @@ Install uv:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-## Usage Workflow
+## Usage workflow
 
-### Local Development
+### Local development
 
 ```bash
 # 1. Setup (first time only)
@@ -268,7 +252,7 @@ jupyter lab
 ./sync_venv.sh
 ```
 
-### GitHub Workflow
+### GitHub workflow
 
 ```bash
 # 1. Create/edit notebooks locally
@@ -283,7 +267,7 @@ git push
 
 ## Examples
 
-### Margin Notes
+### Margin notes
 
 ```markdown
 Portfolio optimization uses modern portfolio theory.
@@ -295,7 +279,7 @@ Returns are normally distributed - often violated in practice.
 :::
 ```
 
-### Full-Width Code
+### Full-width code
 
 ```python
 #| column: page
@@ -316,7 +300,7 @@ factors.
 
 ## Customization
 
-### Custom Styles
+### Custom styles
 
 Edit `buildfiles/preamble.tex.template` for LaTeX customization:
 
@@ -325,7 +309,7 @@ Edit `buildfiles/preamble.tex.template` for LaTeX customization:
 - Page layout
 - Headers/footers
 
-### Adding Dependencies
+### Adding dependencies
 
 Edit `pyproject.toml`:
 
@@ -343,7 +327,7 @@ Then run:
 
 ## Troubleshooting
 
-### PDF Build Fails
+### PDF build fails
 
 ```bash
 # Check Quarto installation
@@ -356,7 +340,7 @@ quarto install tinytex
 python3 buildfiles/apply_fonts.py buildfiles/font_config.env
 ```
 
-### Fonts Not Found
+### Fonts not found
 
 ```bash
 # Install free fonts (Ubuntu/Debian)
@@ -370,7 +354,7 @@ brew install --cask font-inconsolata font-fira-code
 fc-cache -f -v
 ```
 
-### Margin Notes Not Showing
+### Margin notes not showing
 
 Check YAML has:
 ```yaml
@@ -378,7 +362,7 @@ reference-location: margin
 citation-location: margin
 ```
 
-### Code Not Full Width
+### Code not full width
 
 Add directive:
 ```python
@@ -389,17 +373,17 @@ Add directive:
 
 ## License
 
-This template is provided as-is for creating financial reports. Modify freely for your needs.
+This template is provided as-is. Modify freely for your needs.
 
 ## Credits
 
 - Typography: Edward Tufte's design principles
-- Fonts: Palatino, Fira Code, Inconsolata (all open-source)
-- Build System: Quarto, LaTeX/LuaLaTeX
+- Fonts: Palatino, Fira Code, Inconsolata (all open source)
+- Build system: Quarto, LaTeX/LuaLaTeX
 - Python: uv, pandas, numpy, matplotlib
 
 ---
 
 For detailed documentation, see:
-- `Docs/Tufte_Layout_and_Citations.md` - Complete Tufte guide
-- `Docs/README_FONTS.md` - Font configuration system
+- `Docs/Tufte_Layout_and_Citations.md` -- Tufte layout guide
+- `Docs/README_FONTS.md` -- font configuration
